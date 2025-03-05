@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="output.css">
+</head>
+<body class="w-full">
+    <form action="/" method="post">
+        <section class="w-full h-screen flex flex-col gap-2 justify-center items-center bg-gray-400">
+            <section class="flex flex-col gap-2 w-40"> 
+                <label for="nid_number">Nid Number</label>
+                <input type="number" name="nid_number" id="nid_number" placeholder="Nid Number" class="border rounded p-2">
+              </section>
+    
+            <section class="flex flex-col gap-2 w-40">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="password">
+            </section>
+    
+            <section class="flex flex-col gap-2 w-20 bg-blue-500">
+                <button type="submit">Login</button>
+            </section>
+
+            <section class="flex flex-col gap-2 w-1/2">
+                <h1>Create an account?
+                    <a href="/page.html" class="w-20 bg-red-500">Sign-Up</a>
+                </h1>
+            </section>
+        </section>
+    </form>
+    <script src="index.js"></script>
+</body>
+</html>

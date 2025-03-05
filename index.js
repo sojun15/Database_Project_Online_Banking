@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.get('/',(req,res)=>{
-    res.sendFile(__dirname+'/page.html');
+    res.sendFile(__dirname+'/signup.html');
 });
 
 app.post('/',(req,res)=>{
