@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="output.css">
 </head>
 <body>
-    <form action="/" method="post">
+    <form action="/signup" method="post">
         <section class="w-full h-screen flex flex-col gap-2 justify-center items-center bg-gray-400">
             <section class="flex flex-col gap-2 w-40"> 
                 <label for="nid_number">Nid Number</label>
@@ -27,6 +27,11 @@
             <section class="flex flex-col gap-2 w-40">
                 <label for="date_birth">Date of Birth</label>
                 <input type="date" name="date_birth" id="date_birth" placeholder="date_birth">
+            </section>
+
+            <section class="flex flex-col gap-2 w-40">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="password">
             </section>
     
             <section class="flex flex-col gap-2 w-20 bg-blue-500">
