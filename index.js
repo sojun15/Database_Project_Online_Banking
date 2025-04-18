@@ -31,13 +31,44 @@ app.post('/signup',(req,res)=>{
         res.send('data insert successfully');
     })
 });
+
 app.post('/send_money',(req,res)=>{
     let {phone,amount,pin_code} = req.body;
 
     let sql = "insert into send_money(Phone,Amount) values(?,?)";
     connect.query(sql,[phone,amount],(error,result)=>{
         if(error) throw error;
-        res.redirect('/completed.html')
+        res.redirect('/completed.html');
+    })
+})
+
+app.post('/recharge',(req,res)=>{
+    let {mobile,amount,pin_code} = req.body;
+
+    let sql = "insert into recharge(Phone,Amount) values(?,?)";
+    connect.query(sql,[mobile,amount],(error,result)=>{
+        if(error) throw error;
+        res.redirect('/completed.html');
+    })
+})
+
+app.post('/pay_bill',(req,res)=>{
+    let {biller_id,biller_type,amount,pin_code} = req.body;
+
+    let sql = "insert into pay_bill(Biller_id,Biller_type,Amount) values (?,?,?)";
+    connect.query(sql,[biller_id,biller_type,amount],(error,result)=>{
+        if(error) throw error;
+        res.redirect('/completed.html');
+    })
+});
+
+app.post('/money_transfer',(req,res)=>{
+    let {account_number,bank_name,amount,pin_code} = req.body;
+
+    let sql = "insert into money_transfer(Account_number,Bank_name,Amount) values (?,?,?)";
+    connect.query(sql,[account_number,bank_name,amount],(error,result)=>{
+        if(error) throw error;
+        res.redirect('/completed.html');
     })
 })
 
