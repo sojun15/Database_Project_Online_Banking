@@ -6,5 +6,12 @@ const connect = createConnection({
     password:'',
     database: 'banking_system'
 });
+connect.connect((err) => {
+    if (err) {
+        console.error('Error connecting to DB:', err.stack);
+        return;
+    }
+    console.log('Connected to database.');
+});
 
 module.exports = connect;
