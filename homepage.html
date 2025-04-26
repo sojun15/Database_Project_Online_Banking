@@ -18,7 +18,7 @@
 </head>
 <body class="bg-red-200">
   <div class="flex w-full justify-center">
-    <p class="text-2xl border-2 border-dotted m-3">৳500.00</p>
+    <p id="money" class="text-2xl border-2 border-dotted m-3"></p>
   </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
         <a href="/send_money.html">
@@ -43,14 +43,16 @@
           </div>
         </a>
 
-        <div class="card bg-green-200 w-60 shadow-lg">
-          <div class="card-body">
-            <h2 class="card-title">Cash out</h2>
+        <a href="/cashout.html">
+          <div class="card bg-green-200 w-60 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title">Cash out</h2>
+            </div>
+            <figure>
+              <img src="bkh.png" alt="Image">
+            </figure>
           </div>
-          <figure>
-            <img src="bkh.png" alt="Image">
-          </figure>
-        </div>
+        </a>
 
         <a href="/pay_bill.html">
           <div class="card bg-green-200 w-60 shadow-lg">
@@ -74,5 +76,6 @@
           </div>
         </a>
     </div>
+    <script src="fronted_server.js"></script>
 </body>
 </html>

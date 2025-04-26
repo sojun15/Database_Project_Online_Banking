@@ -42,6 +42,16 @@ app.post('/send_money',(req,res)=>{
     })
 })
 
+app.post('/cashout',(req,res)=>{
+    let {phone,amount,pin_code} = req.body;
+
+    let sql = "insert into cashout(Phone,Amount) values(?,?)";
+    connect.query(sql,[phone,amount],(error,result)=>{
+        if(error) throw error;
+        res.redirect('/completed.html');
+    })
+})
+
 app.post('/recharge',(req,res)=>{
     let {mobile,amount,pin_code} = req.body;
 
@@ -73,9 +83,9 @@ app.post('/money_transfer',(req,res)=>{
 })
 
 app.post('/', (req, res) => {
-    let { nid_number, password } = req.body; // Destructure nid and password from form
+    let { nid_number, password } = req.body; //! Destructure nid and password from form
 
-    // let sql = "SELECT * FROM online_bank WHERE Nid = ? AND Password = ?";
+    //! let sql = "SELECT * FROM online_bank WHERE Nid = ? AND Password = ?";
     connect.query("SELECT * FROM online_bank WHERE Nid = ?  AND Password = ?",[nid_number,password], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
@@ -85,6 +95,23 @@ app.post('/', (req, res) => {
         }
     });
 });
+
+app.get('/get_amount',(req,res)=>{
+    let sql = "select Money from online_bank where nid=450";
+
+    connect.query(sql,(error,result)=>{
+        if(error) throw error;
+        if(result.length>=0)
+        {
+            res.json({Money:result[0].Money});
+        }
+        else
+        {
+            res.status(404).send('No data found');
+        }
+    })
+})
+
 
 
 app.listen(5500,()=>{
