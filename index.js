@@ -83,10 +83,10 @@ app.post('/money_transfer',(req,res)=>{
 })
 
 app.post('/', (req, res) => {
-    let { nid_number, password } = req.body; //! Destructure nid and password from form
+    let { phone, password } = req.body; //! Destructure nid and password from form
 
     //! let sql = "SELECT * FROM online_bank WHERE Nid = ? AND Password = ?";
-    connect.query("SELECT * FROM online_bank WHERE Nid = ?  AND Password = ?",[nid_number,password], (err, result) => {
+    connect.query("SELECT * FROM online_bank WHERE Phone = ?  AND Password = ?",[phone,password], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
             res.redirect('/homepage.html');
