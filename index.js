@@ -4,6 +4,15 @@ const connect = require('./connection');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const session = require('express-session');
+
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+
 // cors single host on but multiple host do block
 app.use(cors());
 app.use(express.static(__dirname));
@@ -89,6 +98,8 @@ app.post('/', (req, res) => {
     connect.query("SELECT * FROM online_bank WHERE Phone = ?  AND Password = ?",[phone,password], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
+            // store my login session
+            req.session.phone = phone;
             res.redirect('/homepage.html');
         } else {
             res.redirect('/login.html?error=something_wrong');
@@ -96,23 +107,21 @@ app.post('/', (req, res) => {
     });
 });
 
-app.get('/get_amount',(req,res)=>{
-    let sql = "select Money from online_bank where nid=450";
+app.get('/get_amount', (req, res) => {
+    // here i save my stored login session into a variable
+    let loggedPhone = req.session.phone;
 
-    connect.query(sql,(error,result)=>{
-        if(error) throw error;
-        if(result.length>=0)
-        {
-            res.json({Money:result[0].Money});
-        }
-        else
-        {
+    let sql = "SELECT Money FROM online_bank WHERE Phone = ?";
+    connect.query(sql, [loggedPhone], (error, result) => {
+        // here connect query function check my sql and login phone are matching or not
+        if (error) throw error;
+        if (result.length > 0) {
+            res.json({ Money: result[0].Money });
+        } else {
             res.status(404).send('No data found');
         }
-    })
-})
-
-
+    });
+});
 
 app.listen(5500,()=>{
     console.log('server is running on: http://localhost:5500');
