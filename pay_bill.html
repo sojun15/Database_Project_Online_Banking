@@ -18,8 +18,15 @@
 
             <section class="m-3">
                 <label for="biller_type">Biller Type:</label><br>
-                <input type="text" name="biller_type" id="biller_type" placeholder="Gas or Water">
+                <select name="biller_type" id="biller_type">
+                    <option value="">-- Select Biller Type --</option>
+                    <option value="gas">Gas</option>
+                    <option value="water">Water</option>
+                    <option value="electricity">Electricity</option>
+                    <option value="internet">InterNet</option>
+                </select>
             </section>
+
 
             <section class="m-3">
                 <label for="amount">Amount:</label><br>

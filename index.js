@@ -32,10 +32,11 @@ app.get('/signup',(req,res)=>{
 app.post('/signup',(req,res,next)=>{
     // here disstructuring name and html form name must be same otherwise error
     let {nid_number,name,phone,date_birth,password} = req.body;
+    let money = 0;
 
-    let sql = "insert into online_bank(Nid,Name,Phone,Date_birth,Password) values(?,?,?,?,?)";
-    connect.query(sql,[nid_number,name,phone,date_birth,password],(error,result)=>{
-        if(error) throw next(error);
+    let sql = "insert into online_bank(Nid,Name,Phone,Date_birth,Password,Money) values(?,?,?,?,?,?)";
+    connect.query(sql,[nid_number,name,phone,date_birth,password,money],(error,result)=>{
+        if(error) throw error;
         // after passing query we must be send any message as response otherwise there will be error
         res.send('data insert successfully');
     })
@@ -77,7 +78,7 @@ app.post('/send_money',(req,res,next)=>{
                     if(error) return connect.rollback(()=> next(error));
 
                     // after increase and decrease insert send_money table those values
-                    const record_send_money = "insert into send_money(Phone,Amount) values(?,?)";
+                    const record_send_money = "insert into send_money(Phone,Money) values(?,?)";
                     connect.query(record_send_money,[receiver_phone,transfer_amount],(error=>{
                         if(error) return res.rollback(()=> next(error));
 
@@ -157,16 +158,6 @@ app.post('/pay_bill',(req,res,next)=>{
         res.redirect('/completed.html');
     })
 });
-
-app.post('/money_transfer',(req,res,next)=>{
-    let {account_number,bank_name,amount,pin_code} = req.body;
-
-    let sql = "insert into money_transfer(Account_number,Bank_name,Amount) values (?,?,?)";
-    connect.query(sql,[account_number,bank_name,amount],(error,result)=>{
-        if(error) throw next(error);
-        res.redirect('/completed.html');
-    })
-})
 
 app.post('/', (req, res,next) => {
     let { phone, password } = req.body; //! Destructure nid and password from form
