@@ -94,6 +94,15 @@ app.post('/send_money',(req,res,next)=>{
     });
 })
 
+app.post('/money_transfer',(req,res,next)=>{
+    let {account_number,bank_name,amount,pin_code} = req.body;
+    let sql = "insert into money_transfer(Account_number,Bank_name,Amount) values (?,?,?)";
+    connect.query(sql,[account_number,bank_name,amount],(error,result)=>{
+    if(error) throw next(error);
+    res.redirect('/completed.html');
+    })
+    })
+
 app.post('/cashout',(req,res,next)=>{
     let {phone:agent_phone,amount,pin_code} = req.body;
     let sender_phone = req.session.phone;
