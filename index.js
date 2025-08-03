@@ -80,7 +80,7 @@ app.post('/send_money',(req,res,next)=>{
                     // after increase and decrease insert send_money table those values
                     const record_send_money = "insert into send_money(Phone,Money) values(?,?)";
                     connect.query(record_send_money,[receiver_phone,transfer_amount],(error=>{
-                        if(error) return res.rollback(()=> next(error));
+                        if(error) return connect.rollback(()=> next(error));
 
                         // if all of those tasks(increase,decrease,insert) completed then it will update database finally otherwise remain previous state
                         connect.commit(error =>{
