@@ -1,12 +1,17 @@
 const express = require('express');
 const app = express();
-const connect = require('./connection');
+const connect = require('./backend/connection');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // Routes
-const sendMoneyRoute = require('./sendMoney');
-const cashoutRoute = require('./cashout');
+const sendMoneyRoute = require('./backend/sendMoney');
+const cashoutRoute = require('./backend/cashout');
+const getAmountRoute = require('./backend/getAmount');
+const payBillRoute = require('./backend/payBill');
+const rechargeRoute = require('./backend/recharge');
+const loginRoute = require('./backend/login');
+const signupRoute = require('./backend/signup');
 
 // Session management such as req.session.phone
 const session = require('express-session');
@@ -32,75 +37,23 @@ app.get('/signup',(req,res)=>{
     res.redirect('signup.html');
 });
 
-app.post('/signup',(req,res,next)=>{
-    // here disstructuring name and html form name must be same otherwise error
-    let {nid_number,name,phone,date_birth,password} = req.body;
-    let money = 0;
 
-    let sql = "insert into online_bank(Nid,Name,Phone,Date_birth,Password,Money) values(?,?,?,?,?,?)";
-    connect.query(sql,[nid_number,name,phone,date_birth,password,money],(error,result)=>{
-        if(error) throw error;
-        // after passing query we must be send any message as response otherwise there will be error
-        res.send('data insert successfully');
-    })
-});
-
-
+// Use the loginRoute for handling login requests
+app.use(loginRoute);
+// Use the signupRoute for handling signup requests
+app.use(signupRoute);
+// Use the sendMoneyRoute for handling send money requests
 app.use(sendMoneyRoute);
+// Use the cashoutRoute for handling cashout requests
 app.use(cashoutRoute);
+// Use the getAmountRoute for handling get amount requests
+app.use(getAmountRoute);
+// Use the payBillRoute for handling pay bill requests
+app.use(payBillRoute);
+// Use the rechargeRoute for handling recharge requests
+app.use(rechargeRoute);
 
-app.post('/recharge',(req,res,next)=>{
-    let {mobile,amount,pin_code} = req.body;
-
-    let sql = "insert into recharge(Phone,Amount) values(?,?)";
-    connect.query(sql,[mobile,amount],(error,result)=>{
-        if(error) throw next(error);
-        res.redirect('/completed.html');
-    })
-})
-
-app.post('/pay_bill',(req,res,next)=>{
-    let {biller_id,biller_type,biller_month,amount,pin_code} = req.body;
-
-    let sql = "insert into pay_bill(Biller_id,Biller_type,Biller_month,Amount) values (?,?,?,?)";
-    connect.query(sql,[biller_id,biller_type,biller_month,amount],(error,result)=>{
-        if(error) throw next(error);
-        res.redirect('/completed.html');
-    })
-});
-
-app.post('/', (req, res,next) => {
-    let { phone, password } = req.body; //! Destructure nid and password from form
-
-    //! let sql = "SELECT * FROM online_bank WHERE Nid = ? AND Password = ?";
-    connect.query("SELECT * FROM online_bank WHERE Phone = ?  AND Password = ?",[phone,password], (error, result) => {
-        if (error) throw next(error);
-        if (result.length > 0) {
-            // store my login session
-            req.session.phone = phone;
-            res.redirect('/homepage.html');
-        } else {
-            res.redirect('/login.html?error=something_wrong');
-        }
-    });
-});
-
-app.get('/get_amount', (req, res,next) => {
-    // here i save my stored login session into a variable
-    let loggedPhone = req.session.phone;
-
-    let sql = "SELECT Money FROM online_bank WHERE Phone = ?";
-    connect.query(sql, [loggedPhone], (error, result) => {
-        // here connect query function check my sql and login phone are matching or not
-        if (error) throw next(error);
-        if (result.length > 0) {
-            res.json({ Money: result[0].Money });
-        } else {
-            res.status(404).send('No data found');
-        }
-    });
-});
-
+// it use to see in command line if server is running or not
 app.listen(5500,()=>{
     console.log('server is running on: http://localhost:5500');
 });
